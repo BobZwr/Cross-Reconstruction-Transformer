@@ -16,8 +16,12 @@ pip install -r requirements.txt
 ```
 We use torch=1.13.0.
 
-## Training and Evaluation
-We provide the sample script for training our CRT
+## Training and Evaluating
+We provide the sample script for training and evaluating our CRT
+```
+
+```
+
 ```
 
 ```
