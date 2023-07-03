@@ -194,8 +194,6 @@ class CRT(nn.Module):
         :return:
         '''
         B, T, D = tokens.shape
-        tokens = self.proj(tokens)
-        encoded_tokens = torch.cat([self.projs[i](encoded_tokens[i]) for i in range(3)], 1)
         tokens, encoded_tokens = F.normalize(tokens, dim=-1), F.normalize(encoded_tokens, dim=-1)
         encoded_tokens = encoded_tokens.transpose(2, 1)
         cross_mul = torch.exp(torch.matmul(tokens, encoded_tokens))
@@ -265,9 +263,6 @@ class CRT(nn.Module):
         t_idx, m_idx, p_idx = unmasked_num_t, unmasked_num_f // 2 + unmasked_num_t + 1, -1
 
         idc_loss = self.IDC_loss(self.projs[0](ori_tokens), self.projs[1](torch.cat(([encoded_tokens[:, 1: t_idx+1], encoded_tokens[:, t_idx+2: m_idx+1], encoded_tokens[:, m_idx+2: ]]), dim=1)))
-        # encoded_cls_tokens = torch.mean(encoded_tokens[:, [0, t_idx + 1, m_idx + 1]], dim=1)
-        # info_loss = Infomax(self.proj(encoded_cls_tokens), torch.cat((
-        #     self.projs[0](t_tokens), self.projs[1](m_tokens), self.projs[2](p_tokens)), dim=1))
 
         decoder_tokens = encoded_tokens
 

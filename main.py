@@ -41,7 +41,7 @@ def self_supervised_learning(model, X, n_epoch, lr, batch_size, device, min_rati
         pbar.set_description(str(sum(losses) / len(losses)))
     torch.save(model.to('cpu'), 'Pretrained_Model.pkl')
     
-def finetuning(model, train_set, valid_set, n_epoch, lr, batch_size, device, multi_label=False):
+def finetuning(model, train_set, valid_set, n_epoch, lr, batch_size, device, multi_label=True):
     # multi_label: whether the classification task is a multi-label task.
     model.train()
     model.to(device)
@@ -91,6 +91,9 @@ def test(model, dataset, batch_size, multi_label):
             pred = torch.sigmoid(pred) if multi_label else F.softmax(pred, dim=1)
             pred_prob.extend([i.cpu().detach().numpy().tolist() for i in pred])
     auc = roc_auc_score(dataset.label, pred_prob, multi_class='ovr')
+    
+    print('AUC is {:.2f}'.format(auc * 100))
+    print('More metrics can be added in the test function.')
     model.train()
     return auc
 
@@ -116,6 +119,7 @@ if __name__ == '__main__':
     parser.add_argument("--ssl", type=str2bool, default=False)
     parser.add_argument("--sl", type=str2bool, default=True)
     parser.add_argument("--load", type=str2bool, default=True)
+    parser.add_argument("--test", type=str2bool, default=True)
     # all default values of parameters are for PTB-XL
     parser.add_argument("--seq_len", type=int, default=10000)
     parser.add_argument("--patch_len", type=int, default=20)
@@ -144,9 +148,13 @@ if __name__ == '__main__':
     if opt.sl:
         train_X, train_y = np.load('./dataset/har_train_all.npy'), np.load('./dataset/har_train_label.npy')
         valid_X, valid_y = np.load('./dataset/har_valid_all.npy'), np.load('./dataset/har_valid_label.npy')
-        TrainSet = FTDataSet(train_X, train_y, True)
-        ValidSet = FTDataSet(valid_X, valid_y, True)
-        finetuning(model, TrainSet, ValidSet, 100, 1e-3, 128, device, multi_label=True)
-        
+        TrainSet = FTDataSet(train_X, train_y, multi_label=False) # multi_label = True when the dataset is PTBXL
+        ValidSet = FTDataSet(valid_X, valid_y, multi_label=False)
+        finetuning(model, TrainSet, ValidSet, 100, 1e-3, 128, device, multi_label=False)
+    if opt.test:
+        test_X, test_y = np.load('./dataset/har_test_all.npy'), np.load('./dataset/har_test_label.npy')
+        TestSet = FTDataSet(test_X, test_y, multi_label=False)
+        model = torch.load('Finetuned_Model.pkl', map_location=device)
+        test(model, TestSet, 100, multi_label=False)
     
     
