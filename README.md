@@ -14,6 +14,7 @@ git clone https://github.com/BobZwr/Cross-Reconstruction-Transformer.git
 cd Cross-Reconstruction-Transformer
 pip install -r requirements.txt
 ```
+We use torch=1.13.0.
 
 ## Training and Evaluation
 We provide the sample script for training our CRT
