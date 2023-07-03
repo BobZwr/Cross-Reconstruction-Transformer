@@ -135,15 +135,15 @@ if __name__ == '__main__':
     
     if opt.ssl:
         model = Model(seq_len, patch_len, dim, n_classes, in_dim).to(device)
-        X = np.load('./har_train_all.npy')
+        X = np.load('./dataset/har_train_all.npy')
         self_supervised_learning(model, X, 100, 1e-3, 128, device)
     if opt.load:
         model = torch.load('Pretrained_Model.pkl', map_location=device)
     else:
         model = Model(seq_len, patch_len, dim, n_classes, in_dim).to(device)
     if opt.sl:
-        train_X, train_y = np.load('./har_train_all.npy'), np.load('./har_train_label.npy')
-        valid_X, valid_y = np.load('./har_valid_all.npy'), np.load('./har_valid_label.npy')
+        train_X, train_y = np.load('./dataset/har_train_all.npy'), np.load('./dataset/har_train_label.npy')
+        valid_X, valid_y = np.load('./dataset/har_valid_all.npy'), np.load('./dataset/har_valid_label.npy')
         TrainSet = FTDataSet(train_X, train_y, True)
         ValidSet = FTDataSet(valid_X, valid_y, True)
         finetuning(model, TrainSet, ValidSet, 100, 1e-3, 128, device, multi_label=True)
