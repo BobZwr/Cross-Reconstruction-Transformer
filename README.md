@@ -19,12 +19,15 @@ We use torch=1.13.0.
 ## Training and Evaluating
 We provide the sample script for training and evaluating our CRT
 ```
-
+# For Training:
+python main.py --ssl True --sl True --load True --seq_len 256 --patch_len 8 --in_dim 9 --n_classes 6
 ```
 
 ```
-
+# For Testing:
+python main.py --ssl False --sl False --load False --seq_len 256 --patch_len 8 --in_dim 9 --n_classes 6
 ```
+We also provide a subset of HAR dataset for training and testing.
 
 If you found the codes and datasets are useful, please cite our paper
 ```
