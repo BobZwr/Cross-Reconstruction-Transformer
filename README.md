@@ -16,6 +16,9 @@ pip install -r requirements.txt
 ```
 We use torch=1.13.0.
 
+### Processing Data
+We provide `data_processing.py` to generate phase and magnitude information based on the time-domain data. You can modify this file to adapt it to your task.
+
 ## Training and Evaluating
 We provide the sample script for training and evaluating our CRT
 ```
