@@ -16,8 +16,8 @@ pip install -r requirements.txt
 ```
 We use torch=1.13.0.
 
-### Processing Data
-We provide `data_processing.py` to generate phase and magnitude information based on the time-domain data. You can modify this file to adapt it to your task.
+### Processing Data (Optional)
+We provide `data_processing.py` to generate phase and magnitude information based on the time-domain data. You can modify this file to adapt it to your own datasets.
 
 ## Training and Evaluating
 We provide the sample script for training and evaluating our CRT
@@ -34,10 +34,11 @@ We also provide a subset of HAR dataset for training and testing.
 
 If you found the codes and datasets are useful, please cite our paper
 ```
-@article{zhang2022cross,
-  title={Cross reconstruction transformer for self-supervised time series representation learning},
+@article{zhang2023self,
+  title={Self-Supervised Time Series Representation Learning via Cross Reconstruction Transformer},
   author={Zhang, Wenrui and Yang, Ling and Geng, Shijia and Hong, Shenda},
-  journal={arXiv preprint arXiv:2205.09928},
-  year={2022}
+  journal={IEEE Transactions on Neural Networks and Learning Systems},
+  year={2023},
+  publisher={IEEE}
 }
 ```
